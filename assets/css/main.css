@@ -1710,7 +1710,9 @@ section,
 .contact .php-email-form {
   height: 100%;
   padding: 30px;
-  box-shadow: 0 0 4px color-mix(in srgb, var(--default-color), transparent 85%);
+  box-shadow: 0 0 4px color-mix(transparent 85%);
+  background-color: rgba(16, 37, 69, 0.13);
+  border-radius: 8px;
 }
 
 @media (max-width: 575px) {
@@ -1767,7 +1769,7 @@ section,
   box-shadow: none;
   border-radius: 0;
   color: var(--default-color);
-  background-color: color-mix(in srgb, var(--background-color), transparent 50%);
+  background-color: rgba(255, 255, 255, 0.9);
   border-color: color-mix(in srgb, var(--default-color), transparent 80%);
 }
 
@@ -1805,6 +1807,14 @@ section,
     transform: rotate(360deg);
   }
 }
+/*-------------------------------------------------------------
+ Contact Form Section 
+ ------------------------------------------------------------*/
+.contact-title {
+  padding-top: 40px;
+  /* Si prefieres padding en lugar de margin, usa: padding-top: 40px; */
+}
+
 
 /*--------------------------------------------------------------
 # Service Details Section
