@@ -1,0 +1,65 @@
+[
+    {
+        "fecha": "2026-01-27 19:53:54",
+        "nombre": "panda",
+        "correo": "PandaWok17@proton.me",
+        "asunto": "pandasi",
+        "mensaje": "panda no"
+    },
+    {
+        "fecha": "2026-01-27 21:36:41",
+        "nombre": "mercado",
+        "correo": "mercadolibre@gmail.com",
+        "asunto": "cosas",
+        "mensaje": "mas cosas"
+    },
+    {
+        "fecha": "2026-01-27 21:38:39",
+        "nombre": "juan montero",
+        "correo": "juanito42afj@hotmail.com",
+        "asunto": "bla bla bla",
+        "mensaje": "blabla bla quiero contactar para servicio bla blablablablablablablablablablablablablablablabla y tambien un poco de blablablablablablablablablabla con blablabla encima de blablabla para que pueda blablablablablabla"
+    },
+    {
+        "fecha": "2026-01-27 21:52:50",
+        "nombre": "panda",
+        "correo": "PandaWok865@proton.me",
+        "asunto": "hgfutdry",
+        "mensaje": "blablablablablablablablablabla"
+    },
+    {
+        "fecha": "2026-01-27 22:46:22",
+        "nombre": "nada",
+        "correo": "nada@outlook.me",
+        "asunto": "no es un asunto",
+        "mensaje": "no quiero nada"
+    },
+    {
+        "fecha": "2026-01-27 22:47:22",
+        "nombre": "mesa",
+        "correo": "elmundodelasmesas@mesa.com",
+        "asunto": "adquisicion de sillas",
+        "mensaje": "requiero muchas mesas para muchas sillas porfavor"
+    },
+    {
+        "fecha": "2026-01-27 22:51:04",
+        "nombre": "m",
+        "correo": "correo@correo.com",
+        "asunto": "s",
+        "mensaje": "s"
+    },
+    {
+        "fecha": "2026-01-28 22:22:34",
+        "nombre": "po",
+        "correo": "a@gmail.com",
+        "asunto": "aaetedtttt",
+        "mensaje": "ahethhrthrthththee"
+    },
+    {
+        "fecha": "2026-01-28 22:44:12",
+        "nombre": "po",
+        "correo": "a@gmail.com",
+        "asunto": "dog",
+        "mensaje": "doggi dog dog"
+    }
+]
