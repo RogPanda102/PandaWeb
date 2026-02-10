@@ -23,6 +23,8 @@
       }
       // Muestra el mensaje de cargando y oculta los mensajes de error y exito
       // thisform es el formulario actual
+      thisForm.querySelector('button[type="submit"]').disabled = true;
+      thisForm.querySelector('button[type="submit"]').disabled = false;
       thisForm.querySelector('.loading').classList.add('d-block');
       thisForm.querySelector('.error-message').classList.remove('d-block');
       thisForm.querySelector('.sent-message').classList.remove('d-block');
@@ -89,5 +91,20 @@
     thisForm.querySelector('.error-message').innerHTML = error; // Ahora 'error' es una cadena (el mensaje)
     thisForm.querySelector('.error-message').classList.add('d-block');
   }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const toggleBtn = document.getElementById('toggle-btn');
+    const form = document.getElementById('quote-form');
+    
+    if (toggleBtn && form) {  // Verifica que existan los elementos
+      toggleBtn.addEventListener('click', function() {
+        if (form.style.display === 'none' || form.style.display === '') {
+          form.style.display = 'block';
+        } else {
+          form.style.display = 'none';
+        }
+      });
+    }
+  });
 
 })();

@@ -61,5 +61,68 @@
         "correo": "a@gmail.com",
         "asunto": "dog",
         "mensaje": "doggi dog dog"
+    },
+    {
+        "fecha": "2026-01-30 16:30:41",
+        "nombre": "cinta",
+        "correo": "3mmx@cinta.com",
+        "asunto": "cintas tipo diurex",
+        "mensaje": "tapa dura con 100 hojas cd tamaño oficio paquete con 10 cajitas en un paquete de 100 piezas"
+    },
+    {
+        "fecha": "2026-01-30 16:33:54",
+        "nombre": "crhome",
+        "correo": "chromesenku@neworld.me",
+        "asunto": "platino para el liquido",
+        "mensaje": "ir a la isla misteriosa para recuperar el material valioso para poder hacer mas liquido mágico que deshace la petrificación"
+    },
+    {
+        "fecha": "2026-01-30 16:43:52",
+        "nombre": "el elejido",
+        "correo": "3forcefinji@tunic.com",
+        "asunto": "navegador",
+        "mensaje": "zorrito zorro zorro fox"
+    },
+    {
+        "fecha": "2026-01-30 16:52:25",
+        "nombre": "juan",
+        "correo": "jaunmonteroq@gmail.com",
+        "asunto": "aesiestercisclotometripedo",
+        "mensaje": "nada, no, nada de nada, para mi no gracias, no, o bueno si pero no, mejor no"
+    },
+    {
+        "fecha": "2026-02-06 18:26:32",
+        "nombre": "afykfjyf",
+        "correo": "a@a.me",
+        "asunto": "aktgkuytkjy",
+        "mensaje": "ajhfjyrfjkyrjyrfjkyr"
+    },
+    {
+        "fecha": "2026-02-10 17:52:38",
+        "nombre": "a644",
+        "correo": "aiyiv@aiun.me",
+        "asunto": "aesiestercisclotometripedo",
+        "mensaje": "me gustaria una caja de 20 cajitas con 7 cajotas cada una de lapiceros bic punto fino color negro y azul para el martes 34 en la delegacion alvaro obregon"
+    },
+    {
+        "fecha": "2026-02-10 19:58:11",
+        "nombre": "atc",
+        "correo": "a@gmail.com",
+        "asunto": "ajhviy",
+        "mensaje": "ouboviycviy"
+    },
+    {
+        "fecha": "2026-02-10 21:35:49",
+        "nombre": "awefwe",
+        "correo": "a@gmail.com",
+        "asunto": "afwefwef",
+        "mensaje": "afwefwefwrfwr"
+    },
+    {
+        "fecha": "2026-02-10 21:37:41",
+        "nombre": "Panda pandroso",
+        "correo": "Bambu1987@pandasoft.com",
+        "asunto": "bambus",
+        "mensaje": "quiero bambus, muchos bambus"
     }
 ]

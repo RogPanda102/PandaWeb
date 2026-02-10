@@ -1283,143 +1283,6 @@ section,
 }
 
 /*--------------------------------------------------------------
-# Pricing Section
---------------------------------------------------------------*/
-.pricing .pricing-item {
-  background-color: color-mix(in srgb, var(--accent-color), transparent 96%);
-  padding: 40px 40px;
-  height: 100%;
-  border-radius: 15px;
-}
-
-.pricing h3 {
-  font-weight: 600;
-  margin-bottom: 15px;
-  font-size: 20px;
-}
-
-.pricing h4 {
-  color: var(--accent-color);
-  font-size: 48px;
-  font-weight: 700;
-  font-family: var(--heading-font);
-  margin-bottom: 0;
-}
-
-.pricing h4 sup {
-  font-size: 28px;
-}
-
-.pricing h4 span {
-  color: color-mix(in srgb, var(--default-color), transparent 50%);
-  font-size: 18px;
-  font-weight: 500;
-}
-
-.pricing .description {
-  font-size: 14px;
-}
-
-.pricing .cta-btn {
-  background-color: var(--default-color);
-  color: var(--contrast-color);
-  display: block;
-  text-align: center;
-  padding: 10px 35px;
-  border-radius: 5px;
-  font-size: 16px;
-  font-weight: 500;
-  font-family: var(--heading-font);
-  transition: 0.3s;
-  margin-top: 20px;
-  margin-bottom: 6px;
-}
-
-.pricing .cta-btn:hover {
-  background: var(--accent-color);
-  color: var(--contrast-color);
-}
-
-.pricing ul {
-  padding: 0;
-  list-style: none;
-  color: color-mix(in srgb, var(--default-color), transparent 30%);
-  text-align: left;
-  line-height: 20px;
-}
-
-.pricing ul li {
-  padding: 10px 0;
-  display: flex;
-  align-items: center;
-}
-
-.pricing ul li:last-child {
-  padding-bottom: 0;
-}
-
-.pricing ul i {
-  color: #059652;
-  font-size: 24px;
-  padding-right: 3px;
-}
-
-.pricing ul .na {
-  color: color-mix(in srgb, var(--default-color), transparent 60%);
-}
-
-.pricing ul .na i {
-  color: color-mix(in srgb, var(--default-color), transparent 60%);
-}
-
-.pricing ul .na span {
-  text-decoration: line-through;
-}
-
-.pricing .featured {
-  position: relative;
-}
-
-.pricing .featured .popular {
-  position: absolute;
-  top: 15px;
-  right: 15px;
-  background-color: var(--accent-color);
-  color: var(--contrast-color);
-  padding: 5px 15px;
-  margin: 0;
-  border-radius: 5px;
-  font-size: 14px;
-  font-weight: 400;
-}
-
-.pricing .featured .cta-btn {
-  background: var(--accent-color);
-  color: var(--contrast-color);
-}
-
-@media (max-width: 992px) {
-  .pricing .box {
-    max-width: 60%;
-    margin: 0 auto 30px auto;
-  }
-}
-
-@media (max-width: 767px) {
-  .pricing .box {
-    max-width: 80%;
-    margin: 0 auto 30px auto;
-  }
-}
-
-@media (max-width: 420px) {
-  .pricing .box {
-    max-width: 100%;
-    margin: 0 auto 30px auto;
-  }
-}
-
-/*--------------------------------------------------------------
 # Faq Section
 --------------------------------------------------------------*/
 .faq {
@@ -1576,102 +1439,131 @@ section,
   border: 2px solid rgba(255, 255, 255, 0.5);
 }
 
-/*--------------------------------------------------------------
-# Testimonials Section
---------------------------------------------------------------*/
-.testimonials {
-  --background-color: color-mix(in srgb, var(--accent-color), transparent 97%);
-}
-
-.testimonials .testimonial-item {
-  background-color: var(--contrast-color);
-  box-shadow: 0px 0 20px color-mix(in srgb, var(--default-color), transparent 90%);
-  box-sizing: content-box;
-  padding: 30px;
-  margin: 40px 30px;
-  min-height: 320px;
-  display: flex;
-  flex-direction: column;
-  text-align: center;
-  transition: 0.3s;
-}
-
-.testimonials .testimonial-item .stars {
-  margin-bottom: 15px;
-}
-
-.testimonials .testimonial-item .stars i {
-  color: #ffc107;
-  margin: 0 1px;
-}
-
-.testimonials .testimonial-item .testimonial-img {
-  width: 90px;
-  border-radius: 50%;
-  border: 4px solid var(--background-color);
-  margin: 0 auto;
-}
-
-.testimonials .testimonial-item h3 {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 10px 0 5px 0;
-}
-
-.testimonials .testimonial-item h4 {
-  font-size: 14px;
-  color: color-mix(in srgb, var(--default-color), transparent 40%);
-  margin: 0;
-}
-
-.testimonials .testimonial-item p {
-  font-style: italic;
-  margin: 0 auto 15px auto;
-}
-
-.testimonials .swiper-wrapper {
-  height: auto;
-}
-
-.testimonials .swiper-pagination {
-  margin-top: 20px;
+/* Estilos para el formulario integrado en la sección */
+.quote-form {
+  margin-top: 40px; /* Espacio entre el texto/botón y el formulario */
   position: relative;
+  z-index: 3; /* Asegura que esté encima del overlay e imagen */
+  background: rgba(0, 0, 0, 0.95); /* Fondo oscuro similar al modal */
+  padding: 30px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
 }
 
-.testimonials .swiper-pagination .swiper-pagination-bullet {
-  width: 12px;
-  height: 12px;
-  background-color: color-mix(in srgb, var(--default-color), transparent 85%);
-  opacity: 1;
+.quote-form h4 {
+  color: var(--default-color); /* Blanco, usando variable */
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  text-align: center;
 }
 
-.testimonials .swiper-pagination .swiper-pagination-bullet-active {
-  background-color: var(--accent-color);
+.quote-form .form-label {
+  color: var(--default-color); /* Blanco */
 }
 
-.testimonials .swiper-slide {
-  opacity: 0.3;
+.quote-form .form-control {
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: white;
 }
 
-@media (max-width: 1199px) {
-  .testimonials .swiper-slide-active {
-    opacity: 1;
-  }
-
-  .testimonials .swiper-pagination {
-    margin-top: 0;
-  }
-
-  .testimonials .testimonial-item {
-    margin: 40px 20px;
-  }
+.quote-form .form-control::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
 
-@media (min-width: 1200px) {
-  .testimonials .swiper-slide-next {
-    opacity: 1;
-    transform: scale(1.12);
-  }
+.quote-form .btn-primary {
+  background: var(--contrast-color); /* Blanco, usando variable */
+  border-color: var(--contrast-color);
+  font-family: var(--heading-font);
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  padding: 12px 40px;
+  border-radius: 50px;
+  transition: 0.5s;
+}
+
+.quote-form .btn-primary:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* ============================
+   MENSAJES DEL FORMULARIO
+============================ */
+
+.php-email-form .loading,
+.php-email-form .error-message,
+.php-email-form .sent-message {
+  display: none;
+  margin-top: 15px;
+  padding: 12px 16px;
+  border-radius: 6px;
+  font-size: 14px;
+  text-align: center;
+}
+
+/* Mostrar cuando JS activa */
+.php-email-form .d-block {
+  display: block;
+}
+
+/* LOADING */
+.php-email-form .loading {
+  background: rgba(255,255,255,0.08);
+  color: #ddd;
+}
+
+/* ERROR */
+.php-email-form .error-message {
+  background: rgba(220, 53, 69, 0.15);
+  color: #ff6b6b;
+  border: 1px solid #ff6b6b;
+}
+
+/* SUCCESS */
+.php-email-form .sent-message {
+  background: rgba(40, 167, 69, 0.15);
+  color: #4cd964;
+  border: 1px solid #4cd964;
+}
+
+/* ============================
+   BOTÓN FORMULARIO CONTACTO
+============================ */
+
+.php-email-form button[type="submit"] {
+  background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
+  color: #ffffff;
+  border: 1px solid rgba(255,255,255,0.15);
+  padding: 12px 28px;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 10px;
+}
+
+/* Hover */
+.php-email-form button[type="submit"]:hover {
+  /*background: linear-gradient(135deg, #3a3a3a, #222);*/
+  background: linear-gradient(135deg, #1f3d2b, #145c32);
+  border-color: rgba(255,255,255,0.3);
+  transform: translateY(-1px);
+}
+
+/* Click */
+.php-email-form button[type="submit"]:active {
+  transform: translateY(0);
+}
+
+/* Disabled (cuando carga) */
+.php-email-form button[type="submit"]:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /*--------------------------------------------------------------
@@ -1785,18 +1677,6 @@ section,
   color: color-mix(in srgb, var(--default-color), transparent 70%);
 }
 
-.contact .php-email-form button[type=submit] {
-  color: #fff;
-  background: #132e57;
-  border: 1px solid #132e57;
-  padding: 10px 30px;
-  transition: 0.4s;
-  border-radius: 50px;
-}
-
-.contact .php-email-form button[type=submit]:hover {
-  background: rgba(16, 37, 69, 0.80);
-}
 
 @keyframes animate-loading {
   0% {
@@ -1810,10 +1690,7 @@ section,
 /*-------------------------------------------------------------
  Contact Form Section 
  ------------------------------------------------------------*/
-.contact-title {
-  padding-top: 40px;
-  /* Si prefieres padding en lugar de margin, usa: padding-top: 40px; */
-}
+
 
 
 /*--------------------------------------------------------------
