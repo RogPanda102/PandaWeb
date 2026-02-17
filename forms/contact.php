@@ -3,6 +3,7 @@
 // Recibe datos POST y los guarda en un archivo .txt con estructura JSON indentada.
 // Campos esperados: nombre, correo, asunto, mensaje.
 
+require __DIR__ . '/../forms/mailer.php'; // Incluir la función de envío de correo
 // # VALIDACION DE LOS DATOS RECIBIDOS
 // Verificar que sea una petición POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -62,6 +63,54 @@ if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
     exit;
 }
 /*-------------------------------------------------------------------------------------------------*/
+// Datos de conexion a la base de datos
+$host = "localhost";
+$user = "root";
+$pass = ""; // en Laragon suele ir vacío
+$db   = "panda_web"; // nombre de la base de datos
+
+$conn = mysqli_connect($host, $user, $pass, $db); // Establecer la conexión
+
+if (!$conn) {
+    http_response_code(500);
+    echo "Error al conectar con la base de datos";
+    exit;
+}
+
+$stmt = mysqli_prepare($conn, "
+  INSERT INTO contactos
+  (nombre, correo, asunto, mensaje, ip)
+  VALUES (?, ?, ?, ?, ?)
+");
+
+if (!$stmt) {
+    http_response_code(500);
+    echo "Error en la consulta SQL";
+    exit;
+}
+
+
+$ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+
+mysqli_stmt_bind_param(
+  $stmt,
+  "sssss",
+  $nombre,
+  $correo,
+  $asunto,
+  $mensaje,
+  $ip
+);
+
+$result = mysqli_stmt_execute($stmt);
+
+if (!$result) {
+    http_response_code(500);
+    echo "Error al guardar el mensaje";
+    exit;
+}
+
+/*-------------------------------------------------------------------------------------------------*/
 // Array con los datos del envío
 $datosEnvio = [
     'fecha' => date('Y-m-d H:i:s'), // timestamp para referencia
@@ -94,6 +143,16 @@ $jsonIndentado = json_encode($contactos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNIC
 if (file_put_contents($archivo, $jsonIndentado) === false) {
     http_response_code(500); // Error interno del servidor
     echo 'Error al guardar los datos';
+    exit;
+}
+mysqli_close($conn); // Cerrar la conexión a la base de datos
+
+// Enviar correo
+$enviado = enviarCorreo($nombre, $correo, $asunto, $mensaje);
+
+if (!$enviado) {
+    http_response_code(500);
+    echo "Se guardó, pero no se pudo enviar el correo";
     exit;
 }
 

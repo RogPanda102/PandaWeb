@@ -124,5 +124,26 @@
         "correo": "Bambu1987@pandasoft.com",
         "asunto": "bambus",
         "mensaje": "quiero bambus, muchos bambus"
+    },
+    {
+        "fecha": "2026-02-11 18:22:34",
+        "nombre": "Rodrigo",
+        "correo": "PandaWok17@proton.me",
+        "asunto": "papel de baño",
+        "mensaje": "quisiera una caja con 5 paquetes jumbo de papel de baño cotonelle klenex ultra soft de doble hoja, doble impresion de 180 micras"
+    },
+    {
+        "fecha": "2026-02-17 19:37:06",
+        "nombre": "Rodrigo",
+        "correo": "PandaWok17@proton.me",
+        "asunto": "papel de baño",
+        "mensaje": "mucho papel de baño porfavor :P"
+    },
+    {
+        "fecha": "2026-02-17 19:52:21",
+        "nombre": "Pedro",
+        "correo": "Pedro22plv@gmail.com",
+        "asunto": "Dulces de mango para la gobernadora",
+        "mensaje": "blablablablablablablablablablablablablablablablbalablablablablablablablablablablablablablab"
     }
 ]
