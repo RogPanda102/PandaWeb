@@ -1,2 +1,5 @@
 # desarrollo
 pruebas/
+unused/
+.env
+storage/

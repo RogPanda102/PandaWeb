@@ -4,9 +4,11 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
 // Rutas a PHPMailer
-require __DIR__ . '/../assets/vendor/php-email-form/PHPMailer-master/src/Exception.php';
-require __DIR__ . '/../assets/vendor/php-email-form/PHPMailer-master/src/PHPMailer.php';
-require __DIR__ . '/../assets/vendor/php-email-form/PHPMailer-master/src/SMTP.php';
+require __DIR__ . '/../vendor/PHPMailer-master/src/Exception.php';
+require __DIR__ . '/../vendor/PHPMailer-master/src/PHPMailer.php';
+require __DIR__ . '/../vendor/PHPMailer-master/src/SMTP.php';
+require_once __DIR__ . '/../config/app.php'; // Configuración general (ocultar errores, etc.)
+
 
 function enviarCorreo($nombre, $correo, $asunto, $mensaje) {
 
@@ -16,11 +18,12 @@ function enviarCorreo($nombre, $correo, $asunto, $mensaje) {
 
         // Configuración SMTP
         $mail->isSMTP();
-        $mail->Host       = 'sandbox.smtp.mailtrap.io';
+        $mail->Host       = getenv('MAIL_HOST');
         $mail->SMTPAuth   = true;
-        $mail->Username   = '65c4fa679159a4';
-        $mail->Password   = '9e07ab51006814';
-        $mail->Port       = 2525;
+        $mail->Username   = getenv('MAIL_USER');
+        $mail->Password   = getenv('MAIL_PASS');
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = getenv('MAIL_PORT');
 
         // Codificación
         $mail->CharSet = 'UTF-8';

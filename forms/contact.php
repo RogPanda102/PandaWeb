@@ -1,9 +1,10 @@
 <?php
 // contact.php - Endpoint simple para el formulario de contacto
-// Recibe datos POST y los guarda en un archivo .txt con estructura JSON indentada.
 // Campos esperados: nombre, correo, asunto, mensaje.
 
+require_once __DIR__ . '/../config/app.php'; // Configuración general (ocultar errores, etc.)
 require __DIR__ . '/../forms/mailer.php'; // Incluir la función de envío de correo
+
 // # VALIDACION DE LOS DATOS RECIBIDOS
 // Verificar que sea una petición POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -37,9 +38,9 @@ if ($longitudCorreo > 150) {
 
 // Validaciones de longitud para el asunto
 $longitudAsunto = strlen($asunto);
-if ($longitudAsunto < 3 || $longitudAsunto > 50) {
+if ($longitudAsunto < 5 || $longitudAsunto > 100) {
     http_response_code(400);
-    echo 'El asunto debe tener entre 3 y 50 caracteres';
+    echo 'El asunto debe tener entre 5 y 100 caracteres';
     exit;
 }
 
@@ -64,12 +65,16 @@ if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
 }
 /*-------------------------------------------------------------------------------------------------*/
 // Datos de conexion a la base de datos
-$host = "localhost";
-$user = "root";
-$pass = ""; // en Laragon suele ir vacío
-$db   = "panda_web"; // nombre de la base de datos
+// Cargar configuración
+$dbConfig = require '../config/bd.php';
 
-$conn = mysqli_connect($host, $user, $pass, $db); // Establecer la conexión
+// Conectar
+$conn = mysqli_connect(
+    $dbConfig['host'],
+    $dbConfig['user'],
+    $dbConfig['pass'],
+    $dbConfig['db']
+);
 
 if (!$conn) {
     http_response_code(500);
@@ -119,32 +124,6 @@ $datosEnvio = [
     'asunto' => $asunto,
     'mensaje' => $mensaje
 ];
-
-// Archivo donde se guardarán los datos
-$archivo = '../storage/logs.txt';
-
-// Leer el archivo existente si existe, o crear un array vacío
-$contactos = [];
-if (file_exists($archivo)) {
-    $contenido = file_get_contents($archivo);
-    if (!empty($contenido)) {
-        $contactos = json_decode($contenido, true);
-        if (!is_array($contactos)) {
-            $contactos = []; // Si el JSON está corrupto, reiniciar
-        }
-    }
-}
-
-// Añadir el nuevo envío al array
-$contactos[] = $datosEnvio;
-
-// Guardar el array completo en el archivo con JSON indentado
-$jsonIndentado = json_encode($contactos, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-if (file_put_contents($archivo, $jsonIndentado) === false) {
-    http_response_code(500); // Error interno del servidor
-    echo 'Error al guardar los datos';
-    exit;
-}
 mysqli_close($conn); // Cerrar la conexión a la base de datos
 
 // Enviar correo
