@@ -22,17 +22,27 @@ function enviarCorreo($nombre, $correo, $asunto, $mensaje) {
         $mail->SMTPAuth   = true;
         $mail->Username   = getenv('MAIL_USER');
         $mail->Password   = getenv('MAIL_PASS');
-        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
         $mail->Port       = getenv('MAIL_PORT');
+
+        $mail->SMTPOptions = [
+            'ssl' => [
+                'verify_peer' => true,
+                'verify_peer_name' => true,
+                'allow_self_signed' => false,
+            ],
+        ];
 
         // Codificación
         $mail->CharSet = 'UTF-8';
 
         // Emisor
-        $mail->setFrom('no-reply@empresa.com', 'Formulario Web');
+        $mail->setFrom(getenv('MAIL_USER'), 'Formulario Web');
+        $mail->addAddress(getenv('MAIL_USER'));
+        $mail->addReplyTo($correo, $nombre);
 
         // Receptor (puede ser cualquiera en pruebas)
-        $mail->addAddress('pruebas@empresa.com');
+        $mail->addAddress(getenv('MAIL_USER'));
 
         // Contenido
         $mail->isHTML(true);
@@ -56,7 +66,7 @@ function enviarCorreo($nombre, $correo, $asunto, $mensaje) {
         return true;
 
     } catch (Exception $e) {
-
-        return false;
+        echo $mail->ErrorInfo;
+        exit;
     }
 }

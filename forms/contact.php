@@ -13,6 +13,21 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     exit;
 }
 
+if (!empty($_POST['website'])) {
+    http_response_code(400);
+    exit('Bot detectado');
+}
+
+// Limitar envíos a 1 cada 30 segundos por sesión
+if (isset($_SESSION['last_submit']) && 
+    (time() - $_SESSION['last_submit']) < 30) {
+    http_response_code(429);
+    echo 'Espera antes de enviar otro mensaje.';
+    exit;
+}
+
+$_SESSION['last_submit'] = time();
+
 // Sanitizar y obtener los datos del formulario
 $nombre = isset($_POST['name']) ? trim(strip_tags($_POST['name'])) : '';
 $correo = isset($_POST['email']) ? trim(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL)) : '';
@@ -63,6 +78,13 @@ if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
     echo 'Correo electrónico inválido';
     exit;
 }
+// Protección contra header injection
+if (preg_match("/[\r\n]/", $correo)) {
+    http_response_code(400);
+    echo 'Entrada inválida';
+    exit;
+}
+
 /*-------------------------------------------------------------------------------------------------*/
 // Datos de conexion a la base de datos
 // Cargar configuración
@@ -82,6 +104,25 @@ if (!$conn) {
     exit;
 }
 
+// Bloquear múltiples envíos desde misma IP en 1 minuto
+$query = mysqli_prepare($conn, "
+    SELECT COUNT(*) 
+    FROM contactos 
+    WHERE ip = ? 
+    AND fecha >= NOW() - INTERVAL 1 MINUTE
+");
+
+mysqli_stmt_bind_param($query, "s", $ip);
+mysqli_stmt_execute($query);
+mysqli_stmt_bind_result($query, $count);
+mysqli_stmt_fetch($query);
+mysqli_stmt_close($query);
+
+if ($count > 3) {
+    http_response_code(429);
+    exit('Demasiados envíos desde tu IP.');
+}
+
 $stmt = mysqli_prepare($conn, "
   INSERT INTO contactos
   (nombre, correo, asunto, mensaje, ip)
@@ -95,7 +136,7 @@ if (!$stmt) {
 }
 
 
-$ip = $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
+$ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
 
 mysqli_stmt_bind_param(
   $stmt,
