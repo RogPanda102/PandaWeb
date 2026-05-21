@@ -2,23 +2,28 @@
 // contact.php - Endpoint simple para el formulario de contacto
 // Campos esperados: nombre, correo, asunto, mensaje.
 
-require_once __DIR__ . '/../config/app.php'; // Configuración general (ocultar errores, etc.)
-require __DIR__ . '/../forms/mailer.php'; // Incluir la función de envío de correo
+require_once __DIR__ . '/../config/app.php';
+require __DIR__ . '/../forms/mailer.php';
 
-// # VALIDACION DE LOS DATOS RECIBIDOS
-// Verificar que sea una petición POST
+// 🔥 IMPORTANTE: iniciar sesión
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+
+// Validar método
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    http_response_code(405); // Método no permitido
+    http_response_code(405);
     echo 'Método no permitido';
     exit;
 }
 
+// Honeypot
 if (!empty($_POST['website'])) {
     http_response_code(400);
     exit('Bot detectado');
 }
 
-// Limitar envíos a 1 cada 30 segundos por sesión
+// Rate limit por sesión (30s)
 if (isset($_SESSION['last_submit']) && 
     (time() - $_SESSION['last_submit']) < 30) {
     http_response_code(429);
@@ -28,153 +33,80 @@ if (isset($_SESSION['last_submit']) &&
 
 $_SESSION['last_submit'] = time();
 
-// Sanitizar y obtener los datos del formulario
-$nombre = isset($_POST['name']) ? trim(strip_tags($_POST['name'])) : '';
-$correo = isset($_POST['email']) ? trim(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL)) : '';
-$asunto = isset($_POST['subject']) ? trim(strip_tags($_POST['subject'])) : '';
+// Sanitizar
+$nombre  = isset($_POST['name']) ? trim(strip_tags($_POST['name'])) : '';
+$correo  = isset($_POST['email']) ? trim(filter_var($_POST['email'], FILTER_SANITIZE_EMAIL)) : '';
+$asunto  = isset($_POST['subject']) ? trim(strip_tags($_POST['subject'])) : '';
 $mensaje = isset($_POST['message']) ? trim(strip_tags($_POST['message'])) : '';
 
-
-// Validaciones de longitud para el nombre
-$longitudNombre = strlen($nombre);
-if ($longitudNombre < 2 || $longitudNombre > 30) {
-    http_response_code(400); // Solicitud incorrecta
-    echo 'El nombre debe tener entre 2 y 30 caracteres';
-    exit;
+// Validaciones
+if (strlen($nombre) < 2 || strlen($nombre) > 30) {
+    http_response_code(400);
+    exit('El nombre debe tener entre 2 y 30 caracteres');
 }
 
-// Validaciones de longitud para el correo
-$longitudCorreo = strlen($correo);
-if ($longitudCorreo > 150) {
+if (strlen($correo) > 150) {
     http_response_code(400);
-    echo 'El correo electrónico no puede exceder 150 caracteres';
-    exit;
+    exit('El correo no puede exceder 150 caracteres');
 }
 
-// Validaciones de longitud para el asunto
-$longitudAsunto = strlen($asunto);
-if ($longitudAsunto < 5 || $longitudAsunto > 100) {
+if (strlen($asunto) < 5 || strlen($asunto) > 100) {
     http_response_code(400);
-    echo 'El asunto debe tener entre 5 y 100 caracteres';
-    exit;
+    exit('El asunto debe tener entre 5 y 100 caracteres');
 }
 
-// Validaciones de longitud para el mensaje
-$longitudMensaje = strlen($mensaje);
-if ($longitudMensaje < 10 || $longitudMensaje > 2000) {
+if (strlen($mensaje) < 10 || strlen($mensaje) > 2000) {
     http_response_code(400);
-    echo 'El mensaje debe tener entre 10 y 2000 caracteres';
-    exit;
+    exit('El mensaje debe tener entre 10 y 2000 caracteres');
 }
 
 // Validación básica de los campos existentes
 if (empty($nombre) || empty($correo) || empty($asunto) || empty($mensaje)) {
-    http_response_code(400); // Solicitud incorrecta
-    echo 'Todos los campos son obligatorios';
-    exit;
+    http_response_code(400);
+    exit('Todos los campos son obligatorios');
 }
+
 if (!filter_var($correo, FILTER_VALIDATE_EMAIL)) {
     http_response_code(400);
-    echo 'Correo electrónico inválido';
-    exit;
+    exit('Correo electrónico inválido');
 }
-// Protección contra header injection
+
 if (preg_match("/[\r\n]/", $correo)) {
     http_response_code(400);
-    echo 'Entrada inválida';
-    exit;
+    exit('Entrada inválida');
+}
+// BACKUP SIN BASE DE DATOS (CSV)
+$archivo = __DIR__ . '/../storage/contactos.csv';
+
+// Crear carpeta si no existe
+if (!file_exists(dirname($archivo))) {
+    mkdir(dirname($archivo), 0755, true);
 }
 
-/*-------------------------------------------------------------------------------------------------*/
-// Datos de conexion a la base de datos
-// Cargar configuración
-$dbConfig = require '../config/bd.php';
+// Crear archivo con encabezados si no existe
+if (!file_exists($archivo)) {
+    file_put_contents($archivo, "fecha,nombre,correo,asunto,mensaje\n");
+}
 
-// Conectar
-$conn = mysqli_connect(
-    $dbConfig['host'],
-    $dbConfig['user'],
-    $dbConfig['pass'],
-    $dbConfig['db']
+// Guardar registro
+$linea = sprintf(
+    "\"%s\",\"%s\",\"%s\",\"%s\",\"%s\"\n",
+    date('Y-m-d H:i:s'),
+    addslashes($nombre),
+    addslashes($correo),
+    addslashes($asunto),
+    addslashes($mensaje)
 );
 
-if (!$conn) {
-    http_response_code(500);
-    echo "Error al conectar con la base de datos";
-    exit;
-}
-
-// Bloquear múltiples envíos desde misma IP en 1 minuto
-$query = mysqli_prepare($conn, "
-    SELECT COUNT(*) 
-    FROM contactos 
-    WHERE ip = ? 
-    AND fecha >= NOW() - INTERVAL 1 MINUTE
-");
-
-mysqli_stmt_bind_param($query, "s", $ip);
-mysqli_stmt_execute($query);
-mysqli_stmt_bind_result($query, $count);
-mysqli_stmt_fetch($query);
-mysqli_stmt_close($query);
-
-if ($count > 3) {
-    http_response_code(429);
-    exit('Demasiados envíos desde tu IP.');
-}
-
-$stmt = mysqli_prepare($conn, "
-  INSERT INTO contactos
-  (nombre, correo, asunto, mensaje, ip)
-  VALUES (?, ?, ?, ?, ?)
-");
-
-if (!$stmt) {
-    http_response_code(500);
-    echo "Error en la consulta SQL";
-    exit;
-}
-
-
-$ip = $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? '0.0.0.0';
-
-mysqli_stmt_bind_param(
-  $stmt,
-  "sssss",
-  $nombre,
-  $correo,
-  $asunto,
-  $mensaje,
-  $ip
-);
-
-$result = mysqli_stmt_execute($stmt);
-
-if (!$result) {
-    http_response_code(500);
-    echo "Error al guardar el mensaje";
-    exit;
-}
-
-/*-------------------------------------------------------------------------------------------------*/
-// Array con los datos del envío
-$datosEnvio = [
-    'fecha' => date('Y-m-d H:i:s'), // timestamp para referencia
-    'nombre' => $nombre,
-    'correo' => $correo,
-    'asunto' => $asunto,
-    'mensaje' => $mensaje
-];
-mysqli_close($conn); // Cerrar la conexión a la base de datos
+file_put_contents($archivo, $linea, FILE_APPEND);
 
 // Enviar correo
 $enviado = enviarCorreo($nombre, $correo, $asunto, $mensaje);
 
 if (!$enviado) {
     http_response_code(500);
-    echo "Se guardó, pero no se pudo enviar el correo";
-    exit;
+    exit("No se pudo enviar el correo");
 }
 
-// Responde con "OK" para que el JS lo detecte como éxito
+// RESPUESTA PARA JS
 echo 'OK';
