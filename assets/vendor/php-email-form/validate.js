@@ -23,8 +23,9 @@
       }
       // Muestra el mensaje de cargando y oculta los mensajes de error y exito
       // thisform es el formulario actual
-      thisForm.querySelector('button[type="submit"]').disabled = true;
-      thisForm.querySelector('button[type="submit"]').disabled = false;
+      const submitButton = thisForm.querySelector('button[type="submit"]');
+      submitButton.disabled = true; // Deshabilita el botón de envío para evitar múltiples envíos
+      submitButton.innerHTML = 'Enviando...'; // Cambia el texto del botón para indicar que se está enviando
       thisForm.querySelector('.loading').classList.add('d-block');
       thisForm.querySelector('.error-message').classList.remove('d-block');
       thisForm.querySelector('.sent-message').classList.remove('d-block');
@@ -74,6 +75,9 @@
     })
     .then(data => {
       thisForm.querySelector('.loading').classList.remove('d-block');
+      const submitButton = thisForm.querySelector('button[type="submit"]');
+      submitButton.disabled = false; // Rehabilita el botón de envío
+      submitButton.innerHTML = 'Enviar'; // Restaura el texto original del botón
       if (data.trim() == 'OK') {
         thisForm.querySelector('.sent-message').classList.add('d-block');
         thisForm.reset(); 
@@ -82,7 +86,10 @@
       }
     })
     .catch((error) => {
-      displayError(thisForm, error.message); // Usar error.message para mostrar solo el mensaje
+      const submitButton = thisForm.querySelector('button[type="submit"]');
+      submitButton.disabled = false; // Rehabilita el botón de envío
+      submitButton.innerHTML = 'Enviar';
+      displayError(thisForm, error.message);
     });
   }
 

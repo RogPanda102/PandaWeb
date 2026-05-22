@@ -100,13 +100,15 @@ $linea = sprintf(
 
 file_put_contents($archivo, $linea, FILE_APPEND);
 
-// Enviar correo
-$enviado = enviarCorreo($nombre, $correo, $asunto, $mensaje);
+// Enviar correo a la empresa
+$empresa = enviarCorreoEmpresa($nombre, $correo, $asunto, $mensaje);
 
-if (!$enviado) {
+if (!$empresa) {
     http_response_code(500);
     exit("No se pudo enviar el correo");
 }
 
+// Enviar correo al cliente
+enviarCorreoCliente($nombre, $correo);
 // RESPUESTA PARA JS
 echo 'OK';
